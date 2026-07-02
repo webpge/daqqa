@@ -6,7 +6,7 @@ import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.15.0/firebas
 // ===========================================
 //       نظام الحماية (Security Layer)
 // ===========================================
-const allowedDomains = ["algreb51-cloud.github.io", "daqqa-fdcf2.firebaseapp.com", "daqqa-fdcf2.web.app", "localhost", "127.0.0.1"];
+const allowedDomains = ["webpge.github.io", "daqqa-fdcf2.firebaseapp.com", "daqqa-fdcf2.web.app", "localhost", "127.0.0.1"];
 if (!allowedDomains.includes(window.location.hostname)) {
     document.documentElement.innerHTML = "<div style='height:100vh;background:#000;color:red;display:flex;justify-content:center;align-items:center;font-family:sans-serif;font-weight:bold;font-size:24px;direction:rtl;'>غير مصرح بتشغيل النظام خارج النطاق الرسمي<br><span style='font-size:16px;color:#ccc;margin-top:10px;'>Unauthorized Domain Access</span></div>";
     // إيقاف التنفيذ فوراً
