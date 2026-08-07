@@ -395,7 +395,8 @@
             } catch (error) {
                 // محاولة تسجيل الدخول كمستفيد (فرد)
                 try {
-                    // التحقق من إعدادات النظام (السماح بالدخول)
+                    // التحقق من إعدادات النظام (السماح بالدخول وطريقة الدخول)
+                    let authMethod = 'phone';
                     const settingsDoc = await window.fs.getDoc(window.fs.doc(window.db, "artifacts", window.appId, "public", "settings"));
                     if (settingsDoc.exists()) {
                         const sData = settingsDoc.data();
@@ -403,6 +404,9 @@
                             const err = new Error(sData.beneficiaryLoginMessage || "عذراً، الدخول متوقف حالياً");
                             err.isSystemMessage = true;
                             throw err;
+                        }
+                        if (sData.beneficiaryAuthMethod) {
+                            authMethod = sData.beneficiaryAuthMethod;
                         }
                     }
 
@@ -413,14 +417,28 @@
                     let benId = null;
 
                     benSnap.forEach((doc) => {
-                        // التحقق من رقم الجوال ككلمة مرور
-                        if (doc.data().pPhone === pass) {
-                            benData = doc.data();
-                            benId = doc.id;
+                        const data = doc.data();
+                        if (authMethod === 'password') {
+                            if (data.pPassword && data.pPassword === pass) {
+                                benData = data;
+                                benId = doc.id;
+                            }
+                        } else {
+                            if (data.pPhone === pass) {
+                                benData = data;
+                                benId = doc.id;
+                            }
                         }
                     });
 
-                    if (!benData) throw new Error("Beneficiary not found or wrong phone");
+                    if (!benData) {
+                        const errMsg = authMethod === 'password'
+                            ? "بيانات الدخول غير صحيحة (تأكد من رقم الهوية وكلمة السر)"
+                            : "بيانات الدخول غير صحيحة (تأكد من رقم الهوية ورقم الجوال)";
+                        const err = new Error(errMsg);
+                        err.isSystemMessage = true;
+                        throw err;
+                    }
 
                     window.currentUserData = {
                         id: benId,
@@ -440,7 +458,7 @@
                         errorDiv.classList.remove('hidden');
                         return;
                     }
-                    errorDiv.innerText = "بيانات الدخول غير صحيحة (تأكد من الهوية والجوال)";
+                    errorDiv.innerText = "بيانات الدخول غير صحيحة (تأكد من اسم المستخدم وكلمة المرور)";
                     errorDiv.classList.remove('hidden');
                 }
             }
@@ -1533,6 +1551,19 @@
                                         class="w-full bg-white border-none rounded-xl p-4 text-sm font-bold shadow-sm"
                                         placeholder="عذراً، النظام متوقف للصيانة حالياً..."></textarea>
                                 </div>
+                                <div class="mt-6 pt-4 border-t border-indigo-200/60">
+                                    <label class="block text-xs font-bold text-indigo-950 mb-3">طريقة دخول المستفيدين</label>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                        <label class="flex items-center gap-3 p-3.5 bg-white rounded-xl border border-indigo-100 cursor-pointer hover:border-indigo-300 transition-all">
+                                            <input type="radio" name="benAuthMethod" value="phone" id="authMethodPhone" checked class="w-4 h-4 text-indigo-600 focus:ring-indigo-500 border-slate-300">
+                                            <span class="text-xs font-bold text-slate-700">الدخول عبر رقم الجوال</span>
+                                        </label>
+                                        <label class="flex items-center gap-3 p-3.5 bg-white rounded-xl border border-indigo-100 cursor-pointer hover:border-indigo-300 transition-all">
+                                            <input type="radio" name="benAuthMethod" value="password" id="authMethodPassword" class="w-4 h-4 text-indigo-600 focus:ring-indigo-500 border-slate-300">
+                                            <span class="text-xs font-bold text-slate-700">الدخول عبر كلمة السر</span>
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="bg-orange-50 p-6 rounded-2xl border border-orange-100">
@@ -1697,6 +1728,12 @@
                         <input type="text" id="pPhone" maxlength="9" required oninput="only9Numbers(this)"
                             placeholder="59XXXXXXX"
                             class="w-full bg-slate-50 border-none rounded-2xl p-5 input-focus text-sm font-mono font-bold">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 mb-2">كلمة السر (للدخول)</label>
+                        <input type="text" id="pPassword"
+                            placeholder="كلمة السر الخاصة بالمستفيد"
+                            class="w-full bg-slate-50 border-none rounded-2xl p-5 input-focus text-sm font-bold">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-400 mb-2">تاريخ الميلاد</label>
@@ -2507,6 +2544,7 @@
             { id: 'pName', label: 'اسم رب الأسرة', group: 'بيانات رب الأسرة' },
             { id: 'pGender', label: 'جنس رب الأسرة', group: 'بيانات رب الأسرة' },
             { id: 'pId', label: 'هوية رب الأسرة', group: 'بيانات رب الأسرة' },
+            { id: 'pPassword', label: 'كلمة السر', group: 'بيانات رب الأسرة' },
             { id: 'pIdIssue', label: 'اصدار الهوية', group: 'بيانات رب الأسرة' },
             { id: 'pDob', label: 'تاريخ الميلاد', group: 'بيانات رب الأسرة' },
             { id: 'age', label: 'عمر رب الأسرة', group: 'بيانات رب الأسرة' },
@@ -2642,6 +2680,7 @@
         const FIELD_MAP = {
             pName: "اسم رب الأسرة",
             pId: "هوية رب الأسرة",
+            pPassword: "كلمة السر",
             pGender: "جنس رب الأسرة",
             pIdIssue: "اصدار الهوية",
             pDob: "تاريخ ميلاد رب الأسرة",
@@ -3430,6 +3469,13 @@
                     document.getElementById('sysBenEditLabel').innerText = editEnabled ? "التعديل على البيانات مسموح" : "التعديل على البيانات غير مسموح";
                     // حفظ الإعداد في متغير عالمي للاستخدام في hasPerm
                     window.beneficiaryEditEnabled = editEnabled;
+
+                    const authMethod = data.beneficiaryAuthMethod || 'phone';
+                    if (authMethod === 'password') {
+                        document.getElementById('authMethodPassword').checked = true;
+                    } else {
+                        document.getElementById('authMethodPhone').checked = true;
+                    }
                 } else {
                     // Defaults
                     document.getElementById('sysBenLoginToggle').checked = true;
@@ -3437,6 +3483,7 @@
                     document.getElementById('sysBenEditToggle').checked = true;
                     document.getElementById('sysBenEditLabel').innerText = "التعديل على البيانات مسموح";
                     window.beneficiaryEditEnabled = true;
+                    document.getElementById('authMethodPhone').checked = true;
                 }
             } catch (e) { console.error("Error fetching settings:", e); }
         };
@@ -3445,12 +3492,14 @@
             const enabled = document.getElementById('sysBenLoginToggle').checked;
             const msg = document.getElementById('sysBenLoginMsg').value;
             const editEnabled = document.getElementById('sysBenEditToggle').checked;
+            const authMethod = document.getElementById('authMethodPassword').checked ? 'password' : 'phone';
 
             try {
                 await window.fs.setDoc(window.fs.doc(window.db, "artifacts", window.appId, "public", "settings"), {
                     beneficiaryLoginEnabled: enabled,
                     beneficiaryLoginMessage: msg,
                     beneficiaryEditEnabled: editEnabled,
+                    beneficiaryAuthMethod: authMethod,
                     updatedAt: new Date().toISOString(),
                     updatedBy: window.currentUserData.username
                 }, { merge: true });
@@ -4070,6 +4119,7 @@
             switch (colId) {
                 case 'pName': return `<span class="font-bold text-slate-700">${row.pName || '-'}</span>`;
                 case 'pId': return `<span class="font-mono text-slate-500">${mask(row.pId)}</span>`;
+                case 'pPassword': return isRestricted ? '*****' : (row.pPassword || '-');
                 case 'pGender':
                     if (row.pGender) return row.pGender;
                     if (['ارمله', 'مطلقة', 'مهجورة', 'اعزب', 'أيتام'].includes(row.pSocial)) return 'أنثى';
@@ -4233,6 +4283,7 @@
             switch (colId) {
                 case 'pName': return row.pName || '-';
                 case 'pId': return row.pId || '-';
+                case 'pPassword': return row.pPassword || '-';
                 case 'pGender':
                     if (row.pGender) return row.pGender;
                     if (['ارمله', 'مطلقة', 'مهجورة', 'اعزب', 'أيتام'].includes(row.pSocial)) return 'أنثى';
@@ -4797,6 +4848,7 @@
             const payload = {
                 pName: document.getElementById('pName').value,
                 pId: document.getElementById('pId').value,
+                pPassword: document.getElementById('pPassword').value,
                 pGender: document.getElementById('pGender').value,
                 pIdIssue: document.getElementById('pIdIssue').value,
                 pDob: document.getElementById('pDob').value,
