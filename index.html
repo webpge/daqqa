@@ -2544,6 +2544,12 @@
             { id: 'pFamilyStatus', label: 'حالة العائلة', group: 'بيانات السكن' },
             { id: 'children_0_1', label: 'أطفال (0-1 سنة)', group: 'إحصائيات الأطفال' },
             { id: 'children_0_2', label: 'أطفال (0-2 سنة)', group: 'إحصائيات الأطفال' },
+            { id: 'children_0_2_male', label: 'أطفال (0-2 سنة ذكر)', group: 'إحصائيات الأطفال' },
+            { id: 'children_0_2_female', label: 'أطفال (0-2 سنة أنثى)', group: 'إحصائيات الأطفال' },
+            { id: 'children_3_5_male', label: 'أطفال (3-5 سنوات ذكر)', group: 'إحصائيات الأطفال' },
+            { id: 'children_3_5_female', label: 'أطفال (3-5 سنوات أنثى)', group: 'إحصائيات الأطفال' },
+            { id: 'children_6_18_male', label: 'أطفال (6-18 سنة ذكر)', group: 'إحصائيات الأطفال' },
+            { id: 'children_6_18_female', label: 'أطفال (6-18 سنة أنثى)', group: 'إحصائيات الأطفال' },
             { id: 'children_2', label: 'أطفال (عمر سنتين)', group: 'إحصائيات الأطفال' },
             { id: 'children_3', label: 'أطفال (عمر 3 سنوات)', group: 'إحصائيات الأطفال' },
             { id: 'children_4', label: 'أطفال (عمر 4 سنوات)', group: 'إحصائيات الأطفال' },
@@ -2679,12 +2685,23 @@
             return { y, m };
         }
 
-        function countChildrenByAge(members, ageCondition) {
+        function countChildrenByAge(members, ageCondition, genderCondition = null) {
             if (!members || !Array.isArray(members)) return 0;
             return members.filter(m => {
                 if (!['ابن', 'ابنه'].includes(m.relation)) return false;
                 const age = getAge(m.dob);
-                return ageCondition(age);
+                if (!ageCondition(age)) return false;
+                if (genderCondition) {
+                    let gender = m.gender;
+                    if (!gender) {
+                        if (m.relation === 'ابن') gender = 'ذكر';
+                        else if (m.relation === 'ابنه') gender = 'أنثى';
+                        else if (['اخ', 'ابن', 'اب', 'جد', 'عم', 'خال'].includes(m.relation)) gender = 'ذكر';
+                        else if (['اخت', 'زوجة', 'ابنه', 'ام', 'خاله', 'عمه', 'جده', 'محتضنه'].includes(m.relation)) gender = 'أنثى';
+                    }
+                    if (gender !== genderCondition) return false;
+                }
+                return true;
             }).length;
         }
 
@@ -4116,6 +4133,12 @@
                 case 'pFamilyStatus': return row.pFamilyStatus || '-';
                 case 'children_0_1': return countChildrenByAge(row.members, age => age.y <= 1);
                 case 'children_0_2': return countChildrenByAge(row.members, age => age.y <= 2);
+                case 'children_0_2_male': return countChildrenByAge(row.members, age => age.y <= 2, 'ذكر');
+                case 'children_0_2_female': return countChildrenByAge(row.members, age => age.y <= 2, 'أنثى');
+                case 'children_3_5_male': return countChildrenByAge(row.members, age => age.y >= 3 && age.y <= 5, 'ذكر');
+                case 'children_3_5_female': return countChildrenByAge(row.members, age => age.y >= 3 && age.y <= 5, 'أنثى');
+                case 'children_6_18_male': return countChildrenByAge(row.members, age => age.y >= 6 && age.y <= 18, 'ذكر');
+                case 'children_6_18_female': return countChildrenByAge(row.members, age => age.y >= 6 && age.y <= 18, 'أنثى');
                 case 'children_2': return countChildrenByAge(row.members, age => age.y === 2);
                 case 'children_3': return countChildrenByAge(row.members, age => age.y === 3);
                 case 'children_4': return countChildrenByAge(row.members, age => age.y === 4);
@@ -4272,6 +4295,12 @@
                 case 'pFamilyStatus': return row.pFamilyStatus || '-';
                 case 'children_0_1': return countChildrenByAge(row.members, age => age.y <= 1);
                 case 'children_0_2': return countChildrenByAge(row.members, age => age.y <= 2);
+                case 'children_0_2_male': return countChildrenByAge(row.members, age => age.y <= 2, 'ذكر');
+                case 'children_0_2_female': return countChildrenByAge(row.members, age => age.y <= 2, 'أنثى');
+                case 'children_3_5_male': return countChildrenByAge(row.members, age => age.y >= 3 && age.y <= 5, 'ذكر');
+                case 'children_3_5_female': return countChildrenByAge(row.members, age => age.y >= 3 && age.y <= 5, 'أنثى');
+                case 'children_6_18_male': return countChildrenByAge(row.members, age => age.y >= 6 && age.y <= 18, 'ذكر');
+                case 'children_6_18_female': return countChildrenByAge(row.members, age => age.y >= 6 && age.y <= 18, 'أنثى');
                 case 'children_2': return countChildrenByAge(row.members, age => age.y === 2);
                 case 'children_3': return countChildrenByAge(row.members, age => age.y === 3);
                 case 'children_4': return countChildrenByAge(row.members, age => age.y === 4);
