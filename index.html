@@ -1806,6 +1806,8 @@
                         class="bg-slate-50 border-none rounded-2xl p-5 text-sm font-bold">
                     <input type="number" id="familyMartyrCount" min="0" step="1" placeholder="عدد شهداء العائلة"
                         class="bg-slate-50 border-none rounded-2xl p-5 text-sm font-bold">
+                    <input type="number" id="abroadCount" min="0" step="1" placeholder="عدد الأفراد خارج البلاد"
+                        class="bg-slate-50 border-none rounded-2xl p-5 text-sm font-bold">
                     <select id="headIsMartyr"
                         class="bg-slate-50 border-none rounded-2xl p-5 text-sm font-bold text-slate-600">
                         <option value="">هل رب الأسرة شهيد؟</option>
@@ -2526,6 +2528,7 @@
             { id: 'totalCount', label: 'العدد الكلي', group: 'الإحصائيات' },
             { id: 'maleCount', label: 'عدد الذكور', group: 'الإحصائيات' },
             { id: 'femaleCount', label: 'عدد الإناث', group: 'الإحصائيات' },
+            { id: 'abroadCount', label: 'عدد الأفراد خارج البلاد', group: 'الإحصائيات' },
             { id: 'walletOwner', label: 'مالك المحفظة', group: 'المحفظة الإلكترونية' },
             { id: 'walletId', label: 'هوية المحفظة', group: 'المحفظة الإلكترونية' },
             { id: 'walletPhone', label: 'جوال المحفظة', group: 'المحفظة الإلكترونية' },
@@ -2657,6 +2660,7 @@
             totalCount: "عدد الأفراد الكلي",
             femaleCount: "عدد الإناث",
             maleCount: "عدد الذكور",
+            abroadCount: "عدد الأفراد خارج البلاد",
             walletOwner: "مالك المحفظة",
             walletId: "هوية المحفظة",
             walletPhone: "جوال المحفظة",
@@ -4096,6 +4100,7 @@
                 case 'originOwnershipType': return row.originOwnershipType || '-';
                 case 'originHousingDamage': return row.originHousingDamage || '-';
                 case 'familyMartyrCount': return row.familyMartyrCount || '0';
+                case 'abroadCount': return row.abroadCount || '0';
                 case 'currentHousingOwnership': return row.currentHousingOwnership || '-';
                 case 'totalCount': {
                     let total = 1; // رب الأسرة
@@ -4258,6 +4263,7 @@
                 case 'originOwnershipType': return row.originOwnershipType || '-';
                 case 'originHousingDamage': return row.originHousingDamage || '-';
                 case 'familyMartyrCount': return row.familyMartyrCount || 0;
+                case 'abroadCount': return row.abroadCount || 0;
                 case 'currentHousingOwnership': return row.currentHousingOwnership || '-';
                 case 'totalCount': {
                     let total = 1; // رب الأسرة
@@ -4809,6 +4815,7 @@
                 originNeighborhood: document.getElementById('originNeighborhood').value,
                 originStreet: document.getElementById('originStreet').value,
                 familyMartyrCount: parseInt(document.getElementById('familyMartyrCount').value, 10) || 0,
+                abroadCount: parseInt(document.getElementById('abroadCount').value, 10) || 0,
                 headIsMartyr: document.getElementById('headIsMartyr').value,
                 originHousingType: document.getElementById('originHousingType').value,
                 originOwnershipType: document.getElementById('originOwnershipType').value,
@@ -5183,6 +5190,7 @@
                                 <span class="text-slate-400">طبيعة المأوى:</span> <span class="font-bold">${f.shelterType || "-"}</span>
                                 <span class="text-slate-400">فترة النزوح:</span> <span class="font-bold">${f.displacementPeriod || "-"}</span>
                                 <span class="text-slate-400">طبيعة المواطن:</span> <span class="font-bold">${f.citizenStatus || "-"}</span>
+                                <span class="text-slate-400">الأفراد خارج البلاد:</span> <span class="font-bold">${f.abroadCount || "0"}</span>
                                 ${showFamilyStatus ? `<span class="text-slate-400">حالة العائلة:</span> <span class="font-bold ${f.pFamilyStatus === 'هشة' ? 'text-red-500' : 'text-emerald-600'}">${f.pFamilyStatus || "-"}</span>` : ''}
                             </div>
                         </div>
