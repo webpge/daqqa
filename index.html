@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 
 <head>
-    <meta charset="UTF-8">
+     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>النظام الموحد عائلة ابو دقة </title>
     <!-- إعدادات الصورة المصغرة والمعاينة -->
@@ -686,9 +686,10 @@
             <div class="mb-8">
                 <div
                     class="bg-indigo-600 w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-xl shadow-indigo-200">
-                    <img src="https://i.ibb.co/HLyxynn5/image.png" class="w-20 h-20 object-contain" alt="Logo" />
+                    <img src="https://i.ibb.co/HLyxynn5/image.png"
+                        class="w-20 h-20 object-contain" alt="Logo" />
                 </div>
-                <h1 class="text-3xl font-black text-slate-800"> عائلة ابو دقة - حي الفراحين</h1>
+                <h1 class="text-3xl font-black text-slate-800">  عائلة ابو دقة - حي الفراحين</h1>
                 <p class="text-slate-400 mt-2">نظام إدارة البيانات المركزي</p>
             </div>
 
@@ -756,7 +757,8 @@
             </button>
             <div
                 class="w-24 h-24 bg-white rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-indigo-100 border border-slate-100 p-2">
-                <img src="https://i.ibb.co/HLyxynn5/image.png" class="w-full h-full object-contain rounded-2xl">
+                <img src="https://i.ibb.co/HLyxynn5/image.png"
+                    class="w-full h-full object-contain rounded-2xl">
             </div>
             <h2 class="text-2xl font-black text-slate-800 mb-2">تثبيت التطبيق</h2>
             <p class="text-slate-500 text-sm mb-6 font-bold">لضمان وصول التنبيهات وسهولة الاستخدام، يفضل تثبيت التطبيق
@@ -2857,7 +2859,8 @@
             }
 
             // Wife
-            if (family.pSocial !== 'ارمله' && family.wifeName && family.wifeDob && getAge(family.wifeDob).y >= 0 && getAge(family.wifeDob).y <= 17) {
+            const wGender = family.wifeGender || 'أنثى';
+            if (wGender === 'أنثى' && family.pSocial !== 'ارمله' && family.wifeName && family.wifeDob && getAge(family.wifeDob).y >= 0 && getAge(family.wifeDob).y <= 17) {
                 countedPeople.add(family.wifeId || family.wifeName);
             }
 
@@ -2887,7 +2890,8 @@
             }
 
             // Wife
-            if (family.pSocial !== 'ارمله' && family.wifeName && family.wifeDob && getAge(family.wifeDob).y >= 0 && getAge(family.wifeDob).y <= 17) {
+            const wGender = family.wifeGender || 'أنثى';
+            if (wGender === 'ذكر' && family.pSocial !== 'ارمله' && family.wifeName && family.wifeDob && getAge(family.wifeDob).y >= 0 && getAge(family.wifeDob).y <= 17) {
                 countedPeople.add(family.wifeId || family.wifeName);
             }
 
@@ -2906,18 +2910,19 @@
             return countedPeople.size;
         }
 
-        function countFemales18_59(family) {
+        function countFemales19_59(family) {
             if (!family) return 0;
             const countedPeople = new Set();
 
             // Head of household
             const pGender = family.pGender || (['ارمله', 'مطلقة', 'مهجورة', 'اعزب', 'أيتام'].includes(family.pSocial) ? 'أنثى' : 'ذكر');
-            if (pGender === 'أنثى' && family.pDob && getAge(family.pDob).y >= 18 && getAge(family.pDob).y <= 59) {
+            if (pGender === 'أنثى' && family.pDob && getAge(family.pDob).y >= 19 && getAge(family.pDob).y <= 59) {
                 countedPeople.add(family.pId || family.pName);
             }
 
             // Wife
-            if (family.pSocial !== 'ارمله' && family.wifeName && family.wifeDob && getAge(family.wifeDob).y >= 18 && getAge(family.wifeDob).y <= 59) {
+            const wGender = family.wifeGender || 'أنثى';
+            if (wGender === 'أنثى' && family.pSocial !== 'ارمله' && family.wifeName && family.wifeDob && getAge(family.wifeDob).y >= 19 && getAge(family.wifeDob).y <= 59) {
                 countedPeople.add(family.wifeId || family.wifeName);
             }
 
@@ -2925,7 +2930,7 @@
             if (family.members) {
                 family.members.forEach(m => {
                     let gender = m.gender || (['اخت', 'زوجة', 'ابنه', 'ام', 'خاله', 'عمه', 'جده', 'محتضنه'].includes(m.relation) ? 'أنثى' : 'ذكر');
-                    if (gender === 'أنثى' && m.dob && getAge(m.dob).y >= 18 && getAge(m.dob).y <= 59) {
+                    if (gender === 'أنثى' && m.dob && getAge(m.dob).y >= 19 && getAge(m.dob).y <= 59) {
                         countedPeople.add(m.idNum || m.name);
                     }
                 });
@@ -2936,18 +2941,19 @@
             return countedPeople.size;
         }
 
-        function countMales18_59(family) {
+        function countMales19_59(family) {
             if (!family) return 0;
             const countedPeople = new Set();
 
             // Head of household
             const pGender = family.pGender || (['ارمله', 'مطلقة', 'مهجورة', 'اعزب', 'أيتام'].includes(family.pSocial) ? 'أنثى' : 'ذكر');
-            if (pGender === 'ذكر' && family.pDob && getAge(family.pDob).y >= 18 && getAge(family.pDob).y <= 59) {
+            if (pGender === 'ذكر' && family.pDob && getAge(family.pDob).y >= 19 && getAge(family.pDob).y <= 59) {
                 countedPeople.add(family.pId || family.pName);
             }
 
             // Wife
-            if (family.pSocial !== 'ارمله' && family.wifeName && family.wifeDob && getAge(family.wifeDob).y >= 18 && getAge(family.wifeDob).y <= 59) {
+            const wGender = family.wifeGender || 'أنثى';
+            if (wGender === 'ذكر' && family.pSocial !== 'ارمله' && family.wifeName && family.wifeDob && getAge(family.wifeDob).y >= 19 && getAge(family.wifeDob).y <= 59) {
                 countedPeople.add(family.wifeId || family.wifeName);
             }
 
@@ -2955,7 +2961,7 @@
             if (family.members) {
                 family.members.forEach(m => {
                     let gender = m.gender || (['اخ', 'ابن', 'اب', 'جد', 'عم', 'خال'].includes(m.relation) ? 'ذكر' : 'أنثى');
-                    if (gender === 'ذكر' && m.dob && getAge(m.dob).y >= 18 && getAge(m.dob).y <= 59) {
+                    if (gender === 'ذكر' && m.dob && getAge(m.dob).y >= 19 && getAge(m.dob).y <= 59) {
                         countedPeople.add(m.idNum || m.name);
                     }
                 });
@@ -2977,7 +2983,8 @@
             }
 
             // Wife
-            if (family.pSocial !== 'ارمله' && family.wifeName && family.wifeDob && getAge(family.wifeDob).y >= 60) {
+            const wGender = family.wifeGender || 'أنثى';
+            if (wGender === 'أنثى' && family.pSocial !== 'ارمله' && family.wifeName && family.wifeDob && getAge(family.wifeDob).y >= 60) {
                 countedPeople.add(family.wifeId || family.wifeName);
             }
 
@@ -3007,7 +3014,8 @@
             }
 
             // Wife
-            if (family.pSocial !== 'ارمله' && family.wifeName && family.wifeDob && getAge(family.wifeDob).y >= 60) {
+            const wGender = family.wifeGender || 'أنثى';
+            if (wGender === 'ذكر' && family.pSocial !== 'ارمله' && family.wifeName && family.wifeDob && getAge(family.wifeDob).y >= 60) {
                 countedPeople.add(family.wifeId || family.wifeName);
             }
 
@@ -4378,8 +4386,8 @@
                 case 'children_under_12': return countChildrenUnder12(row);
                 case 'females_0_17': return countFemales0_17(row);
                 case 'males_0_17': return countMales0_17(row);
-                case 'females_18_59': return countFemales18_59(row);
-                case 'males_18_59': return countMales18_59(row);
+                case 'females_19_59': return countFemales19_59(row);
+                case 'males_19_59': return countMales19_59(row);
                 case 'females_60_plus': return countFemales60Plus(row);
                 case 'males_60_plus': return countMales60Plus(row);
                 case 'individuals_0_3': return countIndividualsByAgeRange(row, 0, 3);
