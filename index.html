@@ -1552,14 +1552,21 @@
                                         placeholder="عذراً، النظام متوقف للصيانة حالياً..."></textarea>
                                 </div>
                                 <div class="mt-6 pt-4 border-t border-indigo-200/60">
-                                    <label class="block text-xs font-bold text-indigo-950 mb-3">طريقة دخول المستفيدين</label>
+                                    <label class="block text-xs font-bold text-indigo-950 mb-3">طريقة دخول
+                                        المستفيدين</label>
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                        <label class="flex items-center gap-3 p-3.5 bg-white rounded-xl border border-indigo-100 cursor-pointer hover:border-indigo-300 transition-all">
-                                            <input type="radio" name="benAuthMethod" value="phone" id="authMethodPhone" checked class="w-4 h-4 text-indigo-600 focus:ring-indigo-500 border-slate-300">
+                                        <label
+                                            class="flex items-center gap-3 p-3.5 bg-white rounded-xl border border-indigo-100 cursor-pointer hover:border-indigo-300 transition-all">
+                                            <input type="radio" name="benAuthMethod" value="phone" id="authMethodPhone"
+                                                checked
+                                                class="w-4 h-4 text-indigo-600 focus:ring-indigo-500 border-slate-300">
                                             <span class="text-xs font-bold text-slate-700">الدخول عبر رقم الجوال</span>
                                         </label>
-                                        <label class="flex items-center gap-3 p-3.5 bg-white rounded-xl border border-indigo-100 cursor-pointer hover:border-indigo-300 transition-all">
-                                            <input type="radio" name="benAuthMethod" value="password" id="authMethodPassword" class="w-4 h-4 text-indigo-600 focus:ring-indigo-500 border-slate-300">
+                                        <label
+                                            class="flex items-center gap-3 p-3.5 bg-white rounded-xl border border-indigo-100 cursor-pointer hover:border-indigo-300 transition-all">
+                                            <input type="radio" name="benAuthMethod" value="password"
+                                                id="authMethodPassword"
+                                                class="w-4 h-4 text-indigo-600 focus:ring-indigo-500 border-slate-300">
                                             <span class="text-xs font-bold text-slate-700">الدخول عبر كلمة السر</span>
                                         </label>
                                     </div>
@@ -1731,8 +1738,7 @@
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-400 mb-2">كلمة السر (للدخول)</label>
-                        <input type="text" id="pPassword"
-                            placeholder="كلمة السر الخاصة بالمستفيد"
+                        <input type="text" id="pPassword" placeholder="كلمة السر الخاصة بالمستفيد"
                             class="w-full bg-slate-50 border-none rounded-2xl p-5 input-focus text-sm font-bold">
                     </div>
                     <div>
@@ -2605,8 +2611,8 @@
             { id: 'children_under_12', label: 'أطفال (أقل من 12 سنة)', group: 'إحصائيات العمر والنوع' },
             { id: 'females_0_17', label: 'إناث (0-17 سنة)', group: 'إحصائيات العمر والنوع' },
             { id: 'males_0_17', label: 'ذكور (0-17 سنة)', group: 'إحصائيات العمر والنوع' },
-            { id: 'females_18_59', label: 'إناث (18-59 سنة)', group: 'إحصائيات العمر والنوع' },
-            { id: 'males_18_59', label: 'ذكور (18-59 سنة)', group: 'إحصائيات العمر والنوع' },
+            { id: 'females_19_59', label: 'إناث (19-59 سنة)', group: 'إحصائيات العمر والنوع' },
+            { id: 'males_19_59', label: 'ذكور (19-59 سنة)', group: 'إحصائيات العمر والنوع' },
             { id: 'females_60_plus', label: 'إناث (60+ سنة)', group: 'إحصائيات العمر والنوع' },
             { id: 'males_60_plus', label: 'ذكور (60+ سنة)', group: 'إحصائيات العمر والنوع' },
             { id: 'individuals_0_3', label: 'عدد الأفراد (0-3 سنوات)', group: 'إحصائيات العمر والنوع' },
@@ -4208,8 +4214,8 @@
                 case 'children_under_12': return countChildrenUnder12(row);
                 case 'females_0_17': return countFemales0_17(row);
                 case 'males_0_17': return countMales0_17(row);
-                case 'females_18_59': return countFemales18_59(row);
-                case 'males_18_59': return countMales18_59(row);
+                case 'females_19_59': return countFemales19_59(row);
+                case 'males_19_59': return countMales19_59(row);
                 case 'females_60_plus': return countFemales60Plus(row);
                 case 'males_60_plus': return countMales60Plus(row);
                 case 'individuals_0_3': return countIndividualsByAgeRange(row, 0, 3);
