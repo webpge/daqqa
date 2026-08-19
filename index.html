@@ -434,7 +434,7 @@
                     if (!benData) {
                         const errMsg = authMethod === 'password'
                             ? "بيانات الدخول غير صحيحة (تأكد من رقم الهوية وكلمة السر)"
-                            : "بيانات الدخول غير صحيحة (تأكد من رقم الهوية ورقم الجوال)";
+                            : "بيانات الدخول غير صحيحة (تأكد من رقم الهوية وكلمة السر)";
                         const err = new Error(errMsg);
                         err.isSystemMessage = true;
                         throw err;
@@ -702,8 +702,7 @@
                         placeholder="Username / ID">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-400 mb-2 mr-1">كلمة المرور / رقم الجوال (بدون
-                        0)</label>
+                    <label class="block text-xs font-bold text-slate-400 mb-2 mr-1">كلمة السر</label>
                     <input type="password" id="loginPass"
                         class="w-full p-4 bg-slate-50 border-none rounded-2xl text-center text-xl tracking-widest focus:ring-2 focus:ring-indigo-500"
                         placeholder="•••••••• / Phone">
